@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <title>a-class-scheduler</title>
+  </head>
+  <body>
+    <div id="app">
+      <p>Hello World!</p>
+      {{msg}}
+    </div>
+    <script src="https://www.gstatic.com/firebasejs/5.5.8/firebase.js"></script>
+    <script>
+      // Initialize Firebase
+      var config = {
+        apiKey: "AIzaSyDRYk6DVL1heJwyq8hIFuZZy8xuPFyT30s",
+        authDomain: "a-class-scheduler-ff679.firebaseapp.com",
+        databaseURL: "https://a-class-scheduler-ff679.firebaseio.com",
+        projectId: "a-class-scheduler-ff679",
+        storageBucket: "a-class-scheduler-ff679.appspot.com",
+        messagingSenderId: "1004429133617"
+      };
+      firebase.initializeApp(config);
+    </script>
+    <script src="/dist/build.js"></script>
+  </body>
+</html>
