@@ -4,6 +4,7 @@
       {{index + 1}}.
       {{item.destination}}
       <button @click="increment(index)">投票する</button>
+      <button @click="deleteList(index)">削除する</button>
       {{item.count}}
     </div>
   </div>
@@ -27,6 +28,9 @@ export default {
   methods: {
     increment: function(index) {
       this.destinations[index].count += 1;
+    },
+    deleteList: function(index) {
+      this.destinations.splice(index, 1);
     }
   },
   mounted() {
