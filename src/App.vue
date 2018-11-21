@@ -3,11 +3,13 @@
     <img src="./assets/logo.png">
     <h1>{{ msg }}</h1>
     <DestinationList></DestinationList>
+    <AddList></AddList>
   </div>
 </template>
 
 <script>
 import DestinationList from './components/DestinationList';
+import AddList from './components/AddList';
 
 export default {
   name: 'app',
@@ -17,7 +19,8 @@ export default {
     };
   },
   components: {
-    DestinationList: DestinationList
+    DestinationList: DestinationList,
+    AddList: AddList
   }
 };
 </script>
