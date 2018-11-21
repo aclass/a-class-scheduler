@@ -1,8 +1,7 @@
 <template>
   <div id="add-list">
-    <h1>{{msg}}</h1>
     <form @submit.prevent="destinationAdd">
-      <input type="text" placeholder="場所" ref="destination">
+      <input v-model="destination" type="text" placeholder="場所" ref="destination">
       <button type="submit">追加</button>
     </form>
   </div>
@@ -14,12 +13,16 @@ export default {
   name: 'add-list',
   data() {
     return {
-      msg: 'hello!'
+      destination: ''
     };
   },
   methods: {
     destinationAdd: function(event, value) {
       const destination = this.$refs.destination.value;
+      if (destination == '') {
+        return;
+      }
+      this.destination = '';
       EventBus.$emit('destination-add', destination);
     }
   }
