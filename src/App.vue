@@ -1,13 +1,14 @@
 <template>
   <div id="app">
     <img src="./assets/logo.png">
-    <h1>{{ msg }}</h1>
-    <DestinationList></DestinationList>
+    <!-- <DestinationList></DestinationList> -->
+    <Choices></Choices>
   </div>
 </template>
 
 <script>
 import DestinationList from './components/DestinationList';
+import Choices from './components/sample/sample';
 
 export default {
   name: 'app',
@@ -17,7 +18,8 @@ export default {
     };
   },
   components: {
-    DestinationList: DestinationList
+    DestinationList: DestinationList,
+    Choices: Choices
   }
 };
 </script>
