@@ -26,10 +26,12 @@ export default {
 
       firebase
         .database()
-        .ref('sg/dest/')
+        .ref('sg/dest/' + this.getKey(index))
         .update({
           count: (this.destinations[index].count += 1)
         });
+
+      console.log(`this.destinations.count:${this.destinations[index].count}`);
     },
     deleteList: function(index) {
       // this.destinations.splice(index, 1);
@@ -53,10 +55,10 @@ export default {
               list.push(rootList[val]);
             });
             this.destinations = list;
-            console.log(this.destinations.length);
+            console.log(`destinations.length:${this.destinations.length}`);
           } else {
             this.destinations = [];
-            console.log(this.destinations.length);
+            console.log(`destinations.length:${this.destinations.length}`);
           }
         });
     },
