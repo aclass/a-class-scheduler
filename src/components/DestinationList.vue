@@ -39,25 +39,26 @@ export default {
         .remove();
     },
     listen: function() {
-      // dbにデータが存在する場合はデータを取得する
-      if (true) {
-        console.log('listening…');
-        firebase
-          .database()
-          .ref('sg/dest/')
-          .on('value', snapshot => {
-            if (snapshot) {
-              const rootList = snapshot.val();
-              let list = [];
-              Object.keys(rootList).forEach((val, key) => {
-                rootList[val].id = val;
-                list.push(rootList[val]);
-              });
-              this.destinations = list;
-            }
+      console.log('listening…');
+      firebase
+        .database()
+        .ref('sg/dest/')
+        .on('value', snapshot => {
+          // dbにデータが存在する場合はデータを取得する
+          if (snapshot.val() !== null) {
+            const rootList = snapshot.val();
+            let list = [];
+            Object.keys(rootList).forEach((val, key) => {
+              rootList[val].id = val;
+              list.push(rootList[val]);
+            });
+            this.destinations = list;
             console.log(this.destinations.length);
-          });
-      }
+          } else {
+            this.destinations = [];
+            console.log(this.destinations.length);
+          }
+        });
     },
     getKey: function(index) {
       console.log(`id:${this.destinations[index].id}`);
