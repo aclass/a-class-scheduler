@@ -2,7 +2,10 @@
   <div id="app">
     <img src="./assets/logo.png">
     <!-- <h1>{{ msg }}</h1> -->
-    <p>Name: {{userData.displayName}}</p>
+    <div>
+      <span v-if="isLogin">Name: {{userData.displayName}}</span>
+      <button v-if="isLogin" @click="logout">ログアウト</button>
+    </div>
     <DestinationList v-if="isLogin"></DestinationList>
     <AddList v-if="isLogin"></AddList>
     <Home v-if="!isLogin"></Home>
@@ -22,6 +25,11 @@ export default {
       isLogin: false,
       userData: null
     };
+  },
+  methods: {
+    logout: function() {
+      firebase.auth().signOut();
+    }
   },
   created: function() {
     firebase.auth().onAuthStateChanged(user => {
