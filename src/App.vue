@@ -2,25 +2,43 @@
   <div id="app">
     <img src="./assets/logo.png">
     <!-- <h1>{{ msg }}</h1> -->
-    <DestinationList></DestinationList>
-    <AddList></AddList>
+    <p>Name: {{userData.displayName}}</p>
+    <DestinationList v-if="isLogin"></DestinationList>
+    <AddList v-if="isLogin"></AddList>
+    <Home v-if="!isLogin"></Home>
   </div>
 </template>
 
 <script>
 import DestinationList from './components/DestinationList';
 import AddList from './components/AddList';
+import Home from './components/Home';
 
 export default {
   name: 'app',
   data() {
     return {
-      msg: 'A-CLASS SCHEDULER'
+      msg: 'A-CLASS SCHEDULER',
+      isLogin: false,
+      userData: null
     };
+  },
+  created: function() {
+    firebase.auth().onAuthStateChanged(user => {
+      console.log(user);
+      if (user) {
+        this.isLogin = true;
+        this.userData = user;
+      } else {
+        this.isLogin = false;
+        this.userData = null;
+      }
+    });
   },
   components: {
     DestinationList: DestinationList,
-    AddList: AddList
+    AddList: AddList,
+    Home: Home
   }
 };
 </script>
