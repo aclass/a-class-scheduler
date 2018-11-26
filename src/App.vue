@@ -1,33 +1,54 @@
 <template>
   <div id="app">
     <img src="./assets/logo.png">
-    <h1>{{ msg }}</h1>
-    <h2>Essential Links</h2>
-    <ul>
-      <li><a href="https://vuejs.org" target="_blank">Core Docs</a></li>
-      <li><a href="https://forum.vuejs.org" target="_blank">Forum</a></li>
-      <li><a href="https://chat.vuejs.org" target="_blank">Community Chat</a></li>
-      <li><a href="https://twitter.com/vuejs" target="_blank">Twitter</a></li>
-    </ul>
-    <h2>Ecosystem</h2>
-    <ul>
-      <li><a href="http://router.vuejs.org/" target="_blank">vue-router</a></li>
-      <li><a href="http://vuex.vuejs.org/" target="_blank">vuex</a></li>
-      <li><a href="http://vue-loader.vuejs.org/" target="_blank">vue-loader</a></li>
-      <li><a href="https://github.com/vuejs/awesome-vue" target="_blank">awesome-vue</a></li>
-    </ul>
+    <!-- <h1>{{ msg }}</h1> -->
+    <div>
+      <span v-if="isLogin">Name: {{userData.displayName}}</span>
+      <button v-if="isLogin" @click="logout">ログアウト</button>
+    </div>
+    <DestinationList v-if="isLogin"></DestinationList>
+    <AddList v-if="isLogin"></AddList>
+    <Home v-if="!isLogin"></Home>
   </div>
 </template>
 
 <script>
+import DestinationList from './components/DestinationList';
+import AddList from './components/AddList';
+import Home from './components/Home';
+
 export default {
   name: 'app',
-  data () {
+  data() {
     return {
-      msg: 'Welcome to Your Vue.js App'
+      msg: 'A-CLASS SCHEDULER',
+      isLogin: false,
+      userData: null
+    };
+  },
+  methods: {
+    logout: function() {
+      firebase.auth().signOut();
     }
+  },
+  created: function() {
+    firebase.auth().onAuthStateChanged(user => {
+      console.log(user);
+      if (user) {
+        this.isLogin = true;
+        this.userData = user;
+      } else {
+        this.isLogin = false;
+        this.userData = null;
+      }
+    });
+  },
+  components: {
+    DestinationList: DestinationList,
+    AddList: AddList,
+    Home: Home
   }
-}
+};
 </script>
 
 <style lang="scss">
@@ -40,7 +61,8 @@ export default {
   margin-top: 60px;
 }
 
-h1, h2 {
+h1,
+h2 {
   font-weight: normal;
 }
 
