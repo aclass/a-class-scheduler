@@ -7,6 +7,7 @@
       <button @click="deleteList(index)">削除する</button>
       {{item.count}}
     </div>
+    <div>残り{{limitCount - userCount}}回</div>
   </div>
 </template>
 
@@ -15,23 +16,38 @@ import { EventBus } from './event-bus.js';
 
 export default {
   name: 'destination-list',
+  props: ['userData'],
   data() {
     return {
-      destinations: []
+      destinations: [],
+      userCount: 0,
+      limitCount: 3
     };
   },
   methods: {
     increment: function(index, key) {
       // this.destinations[index].count += 1;
+      if (this.limitCount - this.userCount > 0) {
+        firebase
+          .database()
+          .ref('sg/dest/' + this.getKey(index))
+          .update({
+            count: (this.destinations[index].count += 1)
+          });
 
-      firebase
-        .database()
-        .ref('sg/dest/' + this.getKey(index))
-        .update({
-          count: (this.destinations[index].count += 1)
-        });
+        console.log(
+          `this.destinations.count:${this.destinations[index].count}`
+        );
 
-      console.log(`this.destinations.count:${this.destinations[index].count}`);
+        // this.userCount += 1;
+        // EventBus.$emit('increment-user-count', this.userCount);
+        console.log(this.userData.uid);
+
+        firebase
+          .database()
+          .ref('sg/user/' + this.userData.uid)
+          .update({ count: (this.userCount += 1) });
+      }
     },
     deleteList: function(index) {
       // this.destinations.splice(index, 1);
@@ -60,6 +76,18 @@ export default {
             this.destinations = [];
             console.log(`destinations.length:${this.destinations.length}`);
           }
+        });
+      firebase
+        .database()
+        .ref('sg/user/' + this.userData.uid)
+        .on('value', snapshot => {
+          // console.log(snapshot.val());
+          const rootCount = snapshot.val();
+          console.log(rootCount.count);
+          this.userCount = rootCount.count;
+
+          // this.userCount = count + 1;
+          // console.log(userCount);
         });
     },
     getKey: function(index) {

@@ -6,13 +6,14 @@
       <span v-if="isLogin">Name: {{userData.displayName}}</span>
       <button v-if="isLogin" @click="logout">ログアウト</button>
     </div>
-    <DestinationList v-if="isLogin"></DestinationList>
+    <DestinationList v-if="isLogin" :userData="userData"></DestinationList>
     <AddList v-if="isLogin"></AddList>
     <Home v-if="!isLogin"></Home>
   </div>
 </template>
 
 <script>
+import { EventBus } from './components/event-bus.js';
 import DestinationList from './components/DestinationList';
 import AddList from './components/AddList';
 import Home from './components/Home';
@@ -41,6 +42,14 @@ export default {
         this.isLogin = false;
         this.userData = null;
       }
+    });
+
+    EventBus.$on('increment-user-count', userCount => {
+      console.log('成功');
+      userCount: userCount += 1;
+      console.log(userCount);
+
+      // firebase.database().ref('sg/' + userData.displayName)
     });
   },
   components: {
